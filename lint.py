@@ -180,7 +180,10 @@ def load_flake8_config(filename, global_config=False, project_config=False):
                 if option_type == 'list':
                     option_value = parser.get('flake8', config).strip()
                     if option_value:
-                        result[plugin] = option_value.split(',')
+                        result[plugin] = [v.replace(
+                            '\n', '') for v in option_value.split(',')]
+                        if result[plugin] and not result[plugin][-1]:
+                            del result[plugin][-1]
                 elif option_type == 'int':
                     option_value = parser.get('flake8', config).strip()
                     if option_value:
